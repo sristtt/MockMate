@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Mona_Sans } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
 
 
 const monoSans = Mona_Sans({
@@ -24,6 +25,7 @@ export default function RootLayout({
         className={`${monoSans.className} antialiased pattern`}
       >
         {children}
+        <Toaster/>
       </body>
     </html>
   );
