@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${monoSans.className} antialiased`}
+        className={`${monoSans.className} antialiased pattern`}
       >
         {children}
       </body>
