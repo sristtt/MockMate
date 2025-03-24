@@ -9,6 +9,8 @@ import { Input } from "@/components/ui/input"
 import Image from "next/image";
 import Link from "next/link";
 import { toast } from "sonner";
+import FornField from "./FornField";
+import { useRouter } from "next/navigation";
 
 const authFormSchema  = (type : FormType)=>{
     return z.object({
@@ -22,7 +24,7 @@ interface Props{
 }
 const AuthForm = ({type}:Props) => {
     const formSchema = authFormSchema(type);
-
+const  router = useRouter();
     const isSignIn = type === 'sign-in';
       // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
@@ -37,7 +39,17 @@ const AuthForm = ({type}:Props) => {
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-        
+        if(type === 'sign-in'){
+            toast.success("Successfully signed in..." , {
+                position:'top-left'
+            })
+            router.push("/")
+        }else{
+            toast.success("Successfully signed Up..." , {
+                position:'top-left'
+            })
+            router.push("/")
+        }
     } catch (error) {
         console.log(error);
         toast.error("There was an error while")
@@ -54,9 +66,9 @@ const AuthForm = ({type}:Props) => {
      
          <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-6 mt-4 form">
-       {!isSignIn && <p>Name</p>}
-       <p>Email</p>
-       <p>Password</p>
+       {!isSignIn && <FornField control={form.control} name={"name"} label="Name" placeholder="Your Name"/>}
+     <FornField control={form.control} name={"email"} label="Email" placeholder="Your Email" type="email"/>
+       <FornField control={form.control} name={"password"} label="Password" placeholder="Your Password" type="password"/>
         <Button type="submit" className="btn">{isSignIn ? 'Sign In' :'Create an Account'}</Button>
       </form>
     </Form>
