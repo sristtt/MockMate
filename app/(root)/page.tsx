@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button'
+import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
@@ -13,6 +14,7 @@ const page = () => {
         <Link href={"/interview"}>Start an Interview</Link>
       </Button>
     </div>
+    <Image src="/robot.png" alt='robo' width={400} height={400} className='max-sm:hidden'/>
    </section>
    </>
   )
