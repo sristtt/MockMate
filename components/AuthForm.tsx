@@ -11,9 +11,9 @@ import Link from "next/link";
 import { toast } from "sonner";
 import FornField from "./FornField";
 import { useRouter } from "next/navigation";
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/firebase/client";
-import { signUp } from "@/lib/actions/auth.action";
+import { signIn, signUp } from "@/lib/actions/auth.action";
 import { useState } from "react";
 
 const authFormSchema  = (type : FormType)=>{
@@ -61,13 +61,31 @@ const {name , email , password}  =values;
             toast.success("Successfully signed in..." , {
                 position:'top-left'
             })
-            router.push("/")
+            router.push("/sign-in")
             setisLoading(false);
         }else{
-            toast.success("Successfully signed Up..." , {
+            try {
+                setisLoading(true);
+                const {email , password}  =values;
+                const userCredentials = await signInWithEmailAndPassword(auth , email , password);
+                const idToken = await userCredentials.user.getIdToken();
+                if(!idToken){
+                    toast.error('Something went wrong')
+                }
+               const res =  await signIn({email , idToken})
+               if(!res?.success){
+                 toast.error('Something went wrong')
+               }
+                toast.success("Successfully signed Up..." , {
                 position:'top-left'
             })
             router.push("/")
+            setisLoading(false);
+            } catch (error) {
+                console.log(error);
+                setisLoading(false);
+            }
+           
         }
     } catch (error) {
         console.log(error);
