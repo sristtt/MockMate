@@ -3,7 +3,7 @@
 import { db } from "@/firebase/admin";
 
 export async function signUp(params : SignUpParams ){
-    const {uid , name , email}  = params;
+    const {uid , name , email ,password}  = params;
     try {
         const userRecord  = await db.collection('users').doc(uid).get();
         if(userRecord.exists){
@@ -14,7 +14,7 @@ export async function signUp(params : SignUpParams ){
         }
 
         await db.collection('users').doc(uid).set({
-            name , email
+            name , email , password
         })
 
     } catch (error : any) {
