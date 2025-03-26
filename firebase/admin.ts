@@ -4,6 +4,7 @@ import {getAuth} from "firebase-admin/auth"
 import {getFirestore} from "firebase-admin/firestore"
 const intiFireBaseAdmin = ()=>{
     const apps = getApps();
+    console.log(process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g , "\n"))
     if(!apps.length){
         initializeApp({
             credential:cert({

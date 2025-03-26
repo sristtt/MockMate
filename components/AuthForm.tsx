@@ -46,7 +46,8 @@ async  function onSubmit(values: z.infer<typeof formSchema>) {
 const {name , email , password}  =values;
 
     try {
-        if(type === 'sign-in'){
+        if(type === 'sign-up'){
+            setisLoading(true);
             const createUserAuth =  await createUserWithEmailAndPassword(auth , email , password);
             const result = await signUp({
                 uid:createUserAuth.user.uid,
@@ -61,6 +62,7 @@ const {name , email , password}  =values;
                 position:'top-left'
             })
             router.push("/")
+            setisLoading(false);
         }else{
             toast.success("Successfully signed Up..." , {
                 position:'top-left'
@@ -70,6 +72,7 @@ const {name , email , password}  =values;
     } catch (error) {
         console.log(error);
         toast.error("There was an error while")
+        setisLoading(false);
     }
   }
   return (
@@ -86,7 +89,7 @@ const {name , email , password}  =values;
        {!isSignIn && <FornField control={form.control} name={"name"} label="Name" placeholder="Your Name"/>}
      <FornField control={form.control} name={"email"} label="Email" placeholder="Your Email" type="email"/>
        <FornField control={form.control} name={"password"} label="Password" placeholder="Your Password" type="password"/>
-        <Button type="submit" className="btn">{isSignIn ? 'Sign In' :'Create an Account'}</Button>
+        <Button type="submit" className="btn" disabled={isLoading}>{isSignIn ? <>{isLoading ? 'Signing in...':'Sign In'}</> :<>{isLoading?'Creating...':'Create an Account'}</>}</Button>
       </form>
     </Form>
     <p className="text-center">
