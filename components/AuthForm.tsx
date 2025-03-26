@@ -11,6 +11,10 @@ import Link from "next/link";
 import { toast } from "sonner";
 import FornField from "./FornField";
 import { useRouter } from "next/navigation";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "@/firebase/client";
+import { signUp } from "@/lib/actions/auth.action";
+import { useState } from "react";
 
 const authFormSchema  = (type : FormType)=>{
     return z.object({
@@ -23,6 +27,7 @@ interface Props{
     type:'sign-in' | 'sign-up'
 }
 const AuthForm = ({type}:Props) => {
+    const [isLoading, setisLoading] = useState(false);
     const formSchema = authFormSchema(type);
 const  router = useRouter();
     const isSignIn = type === 'sign-in';
@@ -36,10 +41,22 @@ const  router = useRouter();
     },
   })
  
-  // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+ 
+async  function onSubmit(values: z.infer<typeof formSchema>) {
+const {name , email , password}  =values;
+
     try {
         if(type === 'sign-in'){
+            const createUserAuth =  await createUserWithEmailAndPassword(auth , email , password);
+            const result = await signUp({
+                uid:createUserAuth.user.uid,
+                name:name!,
+                email,
+                password
+            })
+            if(!result?.success){
+                toast.error(result?.message)
+            }
             toast.success("Successfully signed in..." , {
                 position:'top-left'
             })
