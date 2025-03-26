@@ -33,6 +33,26 @@ export async function signUp(params : SignUpParams ){
     }
  }
 
+export async function signIn(params:SignInParams){
+    const {email ,idToken}  =params;
+    try {
+        const userRecord = await auth.getUserByEmail(email);
+        if(!userRecord){
+         return {
+            success:false,
+            message:'User Does not exist. Create an account'
+        }   
+        }
+        await setSessionCookie(idToken)
+    } catch (error) {
+        console.log(error)
+        return {
+            success:false,
+            message:'Failed to log into an account'
+        }
+    }
+}
+
  export async function setSessionCookie(idToken:string){
     const cookieStore = await cookies();
     const sessionCookie = await auth.createSessionCookie(idToken , {
