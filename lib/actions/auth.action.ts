@@ -14,10 +14,15 @@ export async function signUp(params : SignUpParams ){
             }
         }
 
+
         await db.collection('users').doc(uid).set({
             name , email , password
         })
 
+        return{
+            success:true,
+            message:'Successfully Created an account.Sign in to go home page'
+        }
     } catch (error : any) {
         console.log(error);
         if(error.code === 'auth/email-already-exists'){
@@ -44,6 +49,11 @@ export async function signIn(params:SignInParams){
         }   
         }
         await setSessionCookie(idToken)
+
+        return {
+            success:true,
+            message:'Successfully Signed In...'
+        }
     } catch (error) {
         console.log(error)
         return {

@@ -58,9 +58,7 @@ const {name , email , password}  =values;
             if(!result?.success){
                 toast.error(result?.message)
             }
-            toast.success("Successfully signed in..." , {
-                position:'top-left'
-            })
+           toast.success("Account created successfully. Please sign in.");
             router.push("/sign-in")
             setisLoading(false);
         }else{
@@ -74,11 +72,9 @@ const {name , email , password}  =values;
                 }
                const res =  await signIn({email , idToken})
                if(!res?.success){
-                 toast.error('Something went wrong')
+                 toast.error(res?.message)
                }
-                toast.success("Successfully signed Up..." , {
-                position:'top-left'
-            })
+               
             router.push("/")
             setisLoading(false);
             } catch (error) {
