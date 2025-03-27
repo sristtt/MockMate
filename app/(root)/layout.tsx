@@ -2,8 +2,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import { Toaster } from 'sonner'
-
-const RootLayout = ({children}:{children:React.ReactNode}) => {
+import { redirect } from 'next/navigation'
+import { isAuthenticated } from '@/lib/actions/auth.action'
+const RootLayout = async({children}:{children:React.ReactNode}) => {
+    const isUserAuthenticated   =await isAuthenticated();
+  if(!isUserAuthenticated) return redirect("/sign-in")
   return (
     <div className='root-layout'>
       <nav>
