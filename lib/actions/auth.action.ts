@@ -82,3 +82,22 @@ export async function signIn(params:SignInParams){
         sameSite:'lax'
     })
  }
+
+export async function getCurrentUser() :Promise<User| null> {
+    const cookieStore = await cookies();
+    
+    const sessionCookie  = cookieStore.get('session')?.value;
+    if(!sessionCookie) return null;
+    try {
+        const decodeclaims = await auth.verifySessionCookie(sessionCookie , true);
+        const userReocord = await db.collection('users').doc(decodeclaims.uid).get();
+        if(!userReocord.exists) return null;
+        return{
+            ...userReocord.data(),
+            id:userReocord.id
+        } as User;
+    } catch (error) {
+        console.log(error)
+        return null
+    }
+}
