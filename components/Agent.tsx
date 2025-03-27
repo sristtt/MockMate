@@ -15,7 +15,7 @@ const Agent = ({userName}:AgentProps) => {
     ]
     const lastMessage = messages[messages.length-1];
     const isSpeaking  =true;
-const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.CONNECTING);
+const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.FINISHED);
   return (
     <>
     <div className='call-view'>
