@@ -66,16 +66,16 @@ const {name , email , password}  =values;
                 setisLoading(true);
                 const {email , password}  =values;
                 const userCredentials = await signInWithEmailAndPassword(auth , email , password);
+               
                 const idToken = await userCredentials.user.getIdToken();
                 if(!idToken){
                     toast.error('Something went wrong')
                 }
                const res =  await signIn({email , idToken})
-               if(!res?.success){
-                 toast.error(res?.message)
-               }
+            
                
-            router.push("/")
+                toast.success("Signed In successfully...");
+                router.push("/")
             setisLoading(false);
             } catch (error) {
                 console.log(error);

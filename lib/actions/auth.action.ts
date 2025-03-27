@@ -54,8 +54,14 @@ export async function signIn(params:SignInParams){
             success:true,
             message:'Successfully Signed In...'
         }
-    } catch (error) {
+    } catch (error : any) {
         console.log(error)
+        if(error.code === 'auth/invalid-credential'){
+            return{
+                success:false,
+                message:'Invalid credentials'
+            }
+        }
         return {
             success:false,
             message:'Failed to log into an account'
