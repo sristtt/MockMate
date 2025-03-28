@@ -102,3 +102,7 @@ export const isAuthenticated  = async()=>{
 
     return !!user;
 }
+
+export async function getInterviewByUserId(userid:string):Promise<Interview[]|null>{
+
+}
