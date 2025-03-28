@@ -1,21 +1,59 @@
 "use client"
 import { cn } from '@/lib/utils';
+import { vapi } from '@/lib/vapi.sdk';
 import Image from 'next/image'
-import React, { useState } from 'react'
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
 enum CallStatus{
     INACTIVE='INACTIVE',
     CONNECTING='CONNECTING',
     ACTIVE='ACTIVE',
     FINISHED='FINISHED'
 }
-const Agent = ({userName}:AgentProps) => {
-    const messages = [
-        'Whats you name?',
-        'My name is Navin , nice to meet you!'
-    ]
-    const lastMessage = messages[messages.length-1];
-    const isSpeaking  =true;
+interface SavedMessage{
+    role:'user'| 'system' |'assistent';
+    content:string
+}
+const Agent = ({userName , userId , type}:AgentProps) => {
+    const router = useRouter();
+    const [isSpeaking, setisSpeaking] = useState(false)
+    
 const [callStatus, setCallStatus] = useState<CallStatus>(CallStatus.FINISHED);
+const [messages, setmessages] = useState<SavedMessage[]>([])
+  useEffect(()=>{
+    const onCallStart = () => setCallStatus(CallStatus.ACTIVE);
+    const onCallEnd = ()=>setCallStatus(CallStatus.FINISHED);
+    const onMessage = (message:Message)=>{
+        if(message.type === 'transcript' && message.transcriptType === 'final'){
+            const newMessage = {
+                role:message.role,
+                content:message.transcript
+            }
+            //@ts-ignore
+            setmessages((prev) => [...prev , newMessage])
+        }
+    }
+    const onSpeechStart = ()=>setisSpeaking(true);
+    const onSpeechEnd = ()=>setisSpeaking(false);
+    const onError = (error : Error) =>console.log(error)
+    vapi.on('call-start' , onCallStart);
+    vapi.on('call-end' , onCallEnd);
+    vapi.on('message' , onMessage);
+    vapi.on('speech-start' , onSpeechStart);
+    vapi.on('speech-end' , onSpeechEnd);
+    vapi.on('error' , onError);
+    return ()=>{
+    vapi.off('call-start' , onCallStart);
+    vapi.off('call-end' , onCallEnd);
+    vapi.off('message' , onMessage);
+    vapi.off('speech-start' , onSpeechStart);
+    vapi.off('speech-end' , onSpeechEnd);
+    vapi.off('error' , onError);
+    }
+  } , [])
+  useEffect(()=>{
+    if(callStatus === CallStatus.FINISHED) router.push('/')
+  } , [callStatus , messages , type , userId])
   return (
     <>
     <div className='call-view'>
