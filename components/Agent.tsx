@@ -67,6 +67,7 @@ const handleDisconnect = async()=>{
     setCallStatus(CallStatus.FINISHED);
      vapi.stop();
 }
+//!!!! test this 👇👇👇👇👇
 const latestMessage = messages[messages.length-1]?.content;
 const isCollInactiveOrFinished = callStatus===CallStatus.INACTIVE || callStatus === CallStatus.FINISHED;
   return (
