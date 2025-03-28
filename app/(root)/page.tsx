@@ -35,7 +35,7 @@ const page = async() => {
         hasPastInterview ? (
           <>
 {userinterviews!.map((interview)=>(
-      <InterviewCard {...interview} key={interview.id}/>
+      <InterviewCard {...interview} Iid = {interview.id} key={interview.id}/>
      ))}
      </>
         )
@@ -53,7 +53,7 @@ const page = async() => {
         hasUpComingInterview ? (
           <>
 {latestinterviews!.map((interview)=>(
-      <InterviewCard {...interview} key={interview.id}/>
+      <InterviewCard {...interview} Iid={interview.id} key={interview.id}/>
      ))}
      </>
         )
