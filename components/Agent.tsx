@@ -14,7 +14,7 @@ interface SavedMessage{
     role:'user'| 'system' |'assistent';
     content:string
 }
-const Agent = ({userName , userId , type}:AgentProps) => {
+const Agent = ({userName , userId , type , interviewId , questions}:AgentProps) => {
     const router = useRouter();
     const [isSpeaking, setisSpeaking] = useState(false)
     
@@ -51,8 +51,28 @@ const [messages, setmessages] = useState<SavedMessage[]>([])
     vapi.off('error' , onError);
     }
   } , [])
+  const handleGenerateFeedback = async(message : SavedMessage[])=>{
+    console.log('Generate feedback here 👇')
+    const {success , id}  = {
+        success:true,
+        id:'feedback-id'
+    }
+    if(success && id){
+        router.push(`/interview/${interviewId}/feedback`)
+    }
+    else{
+        console.log("Error while saving feedback ❌")
+    }
+  }
   useEffect(()=>{
-    if(callStatus === CallStatus.FINISHED) router.push('/')
+    if(callStatus===CallStatus.FINISHED){
+        if(type==='generate'){
+           router.push('/')
+        }
+        else{
+             handleGenerateFeedback(messages)
+        }
+    }
   } , [callStatus , messages , type , userId]);
 const handleCall = async()=>{
     setCallStatus(CallStatus.CONNECTING);
