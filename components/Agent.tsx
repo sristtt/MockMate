@@ -76,12 +76,24 @@ const [messages, setmessages] = useState<SavedMessage[]>([])
   } , [callStatus , messages , type , userId]);
 const handleCall = async()=>{
     setCallStatus(CallStatus.CONNECTING);
+    if(type==='generate'){
      await vapi.start(process.env.NEXT_PUBLIC_VAPI_WORKFLOW_ID! , {
         variableValues:{
             username : userName,
             userid:userId
         }
      })
+    }else{
+        let formattedQuestions = '';
+        if(questions){
+            formattedQuestions = questions.map((question)=>`- ${question}`).join('\n');
+        }
+        await vapi.start('INTERVIEWER' , {
+            variableValues:{
+                questions:formattedQuestions
+            }
+        })
+    }
 }
 const handleDisconnect = async()=>{
     setCallStatus(CallStatus.FINISHED);
