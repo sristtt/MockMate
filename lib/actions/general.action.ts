@@ -38,7 +38,7 @@ export async function getInterviewById(id:string):Promise<Interview| null>{
 }
 
 export async function createFeedBack(params:CreateFeedbackParams){
-    const {interviewId , userId , transcript}  = params;
+    const {interviewId , userId , transcript , feedbackId}  = params;
 
     try {
     const formattedTranscript = transcript.map((sentence : {role:string;content:string})=>(`- ${sentence.role} : ${sentence.content}\n`)).join('');
@@ -73,11 +73,22 @@ system:
         createdAt: new Date().toISOString()
     })
 
-    return{
-        success:true,
-        feedBackId:feedback.id
-    }
+    //  let feedbackRef;
+
+    // if (feedbackId) {
+    //   feedbackRef = db.collection("feedback").doc(feedbackId);
+    // } else {
+    //   feedbackRef = db.collection("feedback").doc();
+    // }
+
+    // await feedbackRef.set(feedback);
+
+    return { success: true, feedbackId: feedback.id };
     } catch (error) {
         console.log(error)
+        return {
+            success:false,
+          
+        }
     }
 }
