@@ -5,7 +5,7 @@ import { Toaster } from 'sonner'
 import { redirect } from 'next/navigation'
 import { isAuthenticated } from '@/lib/actions/auth.action'
 const RootLayout = async({children}:{children:React.ReactNode}) => {
-    const isUserAuthenticated   =await isAuthenticated();
+    const isUserAuthenticated   = await isAuthenticated();
   if(!isUserAuthenticated) return redirect("/sign-in")
   return (
     <div className='root-layout'>
