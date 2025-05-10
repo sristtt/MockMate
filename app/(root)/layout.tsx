@@ -3,6 +3,7 @@ import Link from 'next/link'
 import React from 'react'
 import { Toaster } from 'sonner'
 import { redirect } from 'next/navigation'
+// main layout design
 import { isAuthenticated } from '@/lib/actions/auth.action'
 const RootLayout = async({children}:{children:React.ReactNode}) => {
     const isUserAuthenticated   = await isAuthenticated();
