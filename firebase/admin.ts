@@ -21,3 +21,4 @@ const intiFireBaseAdmin = ()=>{
 }
 
 export const {auth , db}  = intiFireBaseAdmin()
+// firebase 🔥 store
