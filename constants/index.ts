@@ -1,5 +1,18 @@
-import { CreateAssistantDTO } from "@vapi-ai/web/dist/api";
-import { z } from "zod";
+import { CreateAssistantDTO, CreateWorkflowDTO } from "@vapi-ai/web/dist/api";
+import { boolean, z } from "zod";
+
+// Add your actual Interview type import or define it properly
+export interface Interview {
+  id: string;
+  userId: string;
+  role: string;
+  type: string;
+  techstack: string[];
+  level: string;
+  questions: string[];
+  finalized: boolean;
+  createdAt: string;
+}
 
 export const mappings = {
   "react.js": "react",
@@ -97,6 +110,23 @@ export const mappings = {
   "aws amplify": "amplify",
 };
 
+export const PLACEHOLDER_INTERVIEWS = [
+  {
+    id: "placeholder-1",
+    role: "Full Stack Developer",
+    type: "Technical",
+    createdAt: new Date().toISOString(),
+    isPlaceholder: true
+  },
+  {
+    id: "placeholder-2",
+    role: "Frontend Developer",
+    type: "Mixed",
+    createdAt: new Date().toISOString(),
+    isPlaceholder: true
+  }
+];
+
 export const interviewer: CreateAssistantDTO = {
   name: "Interviewer",
   firstMessage:
@@ -146,13 +176,14 @@ Thank the candidate for their time.
 Inform them that the company will reach out soon with feedback.
 End the conversation on a polite and positive note.
 
-
 - Be sure to be professional and polite.
 - Keep all your responses short and simple. Use official language, but be kind and welcoming.
 - This is a voice conversation, so keep your responses short, like in a real conversation. Don't ramble for too long.`,
       },
     ],
   },
+  clientMessages: [],
+  serverMessages: [],
 };
 
 export const feedbackSchema = z.object({
@@ -203,6 +234,7 @@ export const interviewCovers = [
   "/tiktok.png",
   "/yahoo.png",
 ];
+
 export const dummyInterviews: Interview[] = [
   {
     id: "1",
@@ -227,3 +259,4 @@ export const dummyInterviews: Interview[] = [
     createdAt: "2024-03-14T15:30:00Z",
   },
 ];
+
