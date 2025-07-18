@@ -42,7 +42,7 @@ This innovative project leverages the power of AI to transform how you prepare f
 ## 🧪 Installation & Setup
 
 ```bash
-git clone https://github.com/NAVIN0507/prepwise.git
+git https://github.com/sristtt/MockMate.git
 cd prepwise
 npm install
 npm run dev
@@ -64,14 +64,7 @@ npm run dev
 - Special shoutout to the tools that power this app
 
 ---
-
-## 🤝 Connect with Me
-
-- 💼 [Portfolio](https://navindev.vercel.app)
-- 🧑‍💻 [LinkedIn](https://www.linkedin.com/in/navin07/)
-
----
-
+  
 ## 📄 License
 
 This project is licensed under the MIT License.
